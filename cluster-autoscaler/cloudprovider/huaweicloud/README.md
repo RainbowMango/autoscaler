@@ -1,4 +1,17 @@
-# Cluster Autoscaler on Huawei Cloud 
+# Cluster Autoscaler on HUAWEI CLOUD 
+
+The cluster autoscaler for [HUAWEI CLOUD](https://www.huaweicloud.com/) scales worker nodes within any
+specified [Auto Scaling](https://www.huaweicloud.com/intl/en-us/product/as.html) Group 
+where the `cluster-autoscaler=huaweicloud` label is on.
+
+Cluster Autoscaler typically runs as a `Deployment` in your cluster.
+
+# Quick Start
+## Build Image
+TODO(RainbowMango)
+
+
+
 
 ## Overview
 The cluster autoscaler for [Huawei ServiceStage](https://www.huaweicloud.com/intl/en-us/product/servicestage.html) scales worker nodes within any
