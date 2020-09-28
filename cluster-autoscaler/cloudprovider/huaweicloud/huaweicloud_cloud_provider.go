@@ -32,6 +32,7 @@ import (
 
 const (
 	// GPULabel is the label added to nodes with GPU resource.
+	// TODO(RainbowMango): redefine label name
 	GPULabel = "cloud.google.com/gke-accelerator"
 )
 
@@ -60,9 +61,10 @@ func (hcp *huaweicloudCloudProvider) Name() string {
 
 // NodeGroups returns all node groups managed by this cloud provider.
 func (hcp *huaweicloudCloudProvider) NodeGroups() []cloudprovider.NodeGroup {
-	groups := make([]cloudprovider.NodeGroup, len(hcp.nodeGroups))
-	for i, group := range hcp.nodeGroups {
-		groups[i] = &group
+	groups := make([]cloudprovider.NodeGroup, 0, len(hcp.nodeGroups))
+	for _, group := range hcp.nodeGroups {
+		groupCopy := group
+		groups = append(groups, &groupCopy)
 	}
 	return groups
 }
@@ -126,7 +128,7 @@ func (hcp *huaweicloudCloudProvider) Refresh() error {
 
 // Append appends a node group to the list of node groups managed by this cloud provider.
 func (hcp *huaweicloudCloudProvider) Append(group []NodeGroup) {
-	hcp.nodeGroups = append(hcp.nodeGroups, group...) // append slice to another
+	hcp.nodeGroups = append(hcp.nodeGroups, group...)
 }
 
 // GetInstanceID returns the unique id of a specified node.
@@ -225,6 +227,8 @@ func getAutoscaleNodePools(manager *huaweicloudCloudManager, opts config.Autosca
 // BuildHuaweiCloud is called by the autoscaler/cluster-autoscaler/builder to build a huaweicloud cloud provider.
 // The manager and nodegroups are created here based on the specs provided via the command line parameters in the deployment file
 func BuildHuaweiCloud(opts config.AutoscalingOptions, do cloudprovider.NodeGroupDiscoveryOptions, rl *cloudprovider.ResourceLimiter) cloudprovider.CloudProvider {
+	return &huaweicloudCloudProvider{}
+/*
 	manager := buildHuaweiCloudManager(opts, do)
 
 	if len(do.NodeGroupSpecs) == 0 {
@@ -245,4 +249,5 @@ func BuildHuaweiCloud(opts config.AutoscalingOptions, do cloudprovider.NodeGroup
 	provider.(*huaweicloudCloudProvider).Append(*nodePoolsWithAutoscalingEnabled)
 
 	return provider
+ */
 }

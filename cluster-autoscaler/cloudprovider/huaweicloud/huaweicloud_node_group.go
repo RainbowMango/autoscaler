@@ -50,6 +50,9 @@ type NodeGroup struct {
 	clusterUpdateMutex *sync.Mutex
 }
 
+// Check if our NodeGroup implements necessary interface.
+var _ cloudprovider.NodeGroup = &NodeGroup{}
+
 // MaxSize returns maximum size of the node group.
 func (ng *NodeGroup) MaxSize() int {
 	return ng.maxNodeCount
