@@ -18,15 +18,16 @@ package huaweicloud
 
 import (
 	"io"
+	"os"
+	"sync"
+
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/huaweicloud/huawei-cloud-sdk-go/openstack/cce/v3/clusters"
 	"k8s.io/autoscaler/cluster-autoscaler/config"
 	"k8s.io/autoscaler/cluster-autoscaler/utils/errors"
-	klog "k8s.io/klog/v2"
-	"os"
-	"sync"
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -42,12 +43,15 @@ var (
 	}
 )
 
-// huaweicloudCloudProvider implements CloudProvider interface defined in autoscaler/cluster-autoscaler/cloudprovider/cloud_provider.go
+// huaweicloudCloudProvider implements CloudProvider interface.
 type huaweicloudCloudProvider struct {
 	huaweiCloudManager *huaweicloudCloudManager
 	resourceLimiter    *cloudprovider.ResourceLimiter
 	nodeGroups         []NodeGroup
 }
+
+// Check if our huaweicloudCloudProvider implements necessary interface.
+var _ cloudprovider.CloudProvider = &huaweicloudCloudProvider{}
 
 // Name returns the name of the cloud provider.
 func (hcp *huaweicloudCloudProvider) Name() string {
