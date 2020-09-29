@@ -227,7 +227,13 @@ func getAutoscaleNodePools(manager *huaweicloudCloudManager, opts config.Autosca
 // BuildHuaweiCloud is called by the autoscaler/cluster-autoscaler/builder to build a huaweicloud cloud provider.
 // The manager and nodegroups are created here based on the specs provided via the command line parameters in the deployment file
 func BuildHuaweiCloud(opts config.AutoscalingOptions, do cloudprovider.NodeGroupDiscoveryOptions, rl *cloudprovider.ResourceLimiter) cloudprovider.CloudProvider {
-	return &huaweicloudCloudProvider{}
+	manager := newHuaweiCloudManager(opts)
+	if manager == nil {
+		return nil
+	}
+	return &huaweicloudCloudProvider{
+		huaweiCloudManager: manager,
+	}
 /*
 	manager := buildHuaweiCloudManager(opts, do)
 

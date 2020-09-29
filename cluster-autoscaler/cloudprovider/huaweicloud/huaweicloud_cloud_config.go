@@ -17,7 +17,12 @@ limitations under the License.
 package huaweicloud
 
 import (
+	"encoding/json"
+	"io"
+	"io/ioutil"
+
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/huaweicloud/huawei-cloud-sdk-go/auth/aksk"
+	"k8s.io/klog/v2"
 )
 
 // CloudConfig is the cloud config file for huaweicloud.
@@ -45,4 +50,23 @@ func toAKSKOptions(cfg CloudConfig) aksk.AKSKOptions {
 		DomainID:         cfg.Global.DomainID,
 	}
 	return opts
+}
+
+// ReadConf reads configuration and creates a CloudConfig instance.
+func ReadConf(config io.Reader) (*CloudConfig, error) {
+	configBytes, err := ioutil.ReadAll(config)
+	if err != nil {
+		klog.Errorf("Read config failed with error: %v", err)
+		return nil, err
+	}
+
+	var cfg CloudConfig
+
+	err = json.Unmarshal(configBytes, &cfg)
+	if err != nil {
+		klog.Errorf("Unmarshal config failed with error: %v", err)
+		return nil, err
+	}
+
+	return &cfg, nil
 }

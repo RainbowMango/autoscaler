@@ -283,3 +283,8 @@ func (mgr *huaweicloudCloudManager) canUpdate() (bool, string, error) {
 	}
 	return !availableStatuses.Has(clusterStatus), clusterStatus, nil
 }
+
+// newHuaweiCloudManager creates a cloud manager.
+func newHuaweiCloudManager(opts config.AutoscalingOptions) *huaweicloudCloudManager {
+	return nil
+}
