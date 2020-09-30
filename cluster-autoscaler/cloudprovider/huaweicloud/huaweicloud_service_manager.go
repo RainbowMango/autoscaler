@@ -16,7 +16,10 @@ limitations under the License.
 
 package huaweicloud
 
-import huaweicloudsdkasmodel "k8s.io/autoscaler/cluster-autoscaler/cloudprovider/huaweicloud/huaweicloud-sdk-go-v3/services/as/v1/model"
+// ScalingGroupInstance is a dummy struct for ScalingGroupInstance. And it will be replaced later.
+type ScalingGroupInstance struct {
+	InstanceId *string `json:"instance_id,omitempty"`
+}
 
 // ElasticCloudServerService represents the elastic cloud server interfaces.
 // It should contains all request against elastic cloud server service.
@@ -32,7 +35,7 @@ type AutoScalingService interface {
 	GetDesireInstanceNumber(groupID string) (int, error)
 
 	// GetInstances gets the instances in an auto scaling group.
-	GetInstances(groupID string)([]huaweicloudsdkasmodel.ScalingGroupInstance, error)
+	GetInstances(groupID string)([]ScalingGroupInstance, error)
 
 	// IncreaseSizeInstance increases the instance number of specific auto scaling group.
 	// The delta should be non-negative.
