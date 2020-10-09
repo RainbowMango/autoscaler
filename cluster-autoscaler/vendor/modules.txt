@@ -504,7 +504,7 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit
 github.com/spf13/pflag
-# github.com/storageos/go-api v0.0.0-20180912212459-343b3eff91fc
+# github.com/storageos/go-api v2.2.0+incompatible
 github.com/storageos/go-api
 github.com/storageos/go-api/netutil
 github.com/storageos/go-api/serror
@@ -1284,7 +1284,8 @@ k8s.io/kubectl/pkg/scale
 k8s.io/kubelet/config/v1beta1
 k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1
 k8s.io/kubelet/pkg/apis/pluginregistration/v1
-# k8s.io/kubernetes v1.19.2
+k8s.io/kubelet/pkg/apis/podresources/v1alpha1
+# k8s.io/kubernetes v1.20.0-alpha.1
 ## explicit
 k8s.io/kubernetes/cmd/kube-proxy/app
 k8s.io/kubernetes/cmd/kubelet/app
@@ -1315,6 +1316,7 @@ k8s.io/kubernetes/pkg/apis/policy/validation
 k8s.io/kubernetes/pkg/apis/scheduling
 k8s.io/kubernetes/pkg/capabilities
 k8s.io/kubernetes/pkg/cloudprovider/providers
+k8s.io/kubernetes/pkg/cluster/ports
 k8s.io/kubernetes/pkg/controller
 k8s.io/kubernetes/pkg/controller/deployment/util
 k8s.io/kubernetes/pkg/controller/volume/persistentvolume/util
@@ -1334,8 +1336,6 @@ k8s.io/kubernetes/pkg/kubelet/apis/config/scheme
 k8s.io/kubernetes/pkg/kubelet/apis/config/v1beta1
 k8s.io/kubernetes/pkg/kubelet/apis/config/validation
 k8s.io/kubernetes/pkg/kubelet/apis/podresources
-k8s.io/kubernetes/pkg/kubelet/apis/podresources/v1alpha1
-k8s.io/kubernetes/pkg/kubelet/apis/resourcemetrics/v1alpha1
 k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1
 k8s.io/kubernetes/pkg/kubelet/cadvisor
 k8s.io/kubernetes/pkg/kubelet/certificate
@@ -1440,7 +1440,6 @@ k8s.io/kubernetes/pkg/kubelet/volumemanager/populator
 k8s.io/kubernetes/pkg/kubelet/volumemanager/reconciler
 k8s.io/kubernetes/pkg/kubelet/winstats
 k8s.io/kubernetes/pkg/kubemark
-k8s.io/kubernetes/pkg/master/ports
 k8s.io/kubernetes/pkg/probe
 k8s.io/kubernetes/pkg/probe/exec
 k8s.io/kubernetes/pkg/probe/http
@@ -1508,7 +1507,6 @@ k8s.io/kubernetes/pkg/util/async
 k8s.io/kubernetes/pkg/util/bandwidth
 k8s.io/kubernetes/pkg/util/config
 k8s.io/kubernetes/pkg/util/conntrack
-k8s.io/kubernetes/pkg/util/ebtables
 k8s.io/kubernetes/pkg/util/env
 k8s.io/kubernetes/pkg/util/filesystem
 k8s.io/kubernetes/pkg/util/flag
@@ -1537,8 +1535,8 @@ k8s.io/kubernetes/pkg/util/tail
 k8s.io/kubernetes/pkg/util/taints
 k8s.io/kubernetes/pkg/volume
 k8s.io/kubernetes/pkg/volume/awsebs
-k8s.io/kubernetes/pkg/volume/azure_dd
 k8s.io/kubernetes/pkg/volume/azure_file
+k8s.io/kubernetes/pkg/volume/azuredd
 k8s.io/kubernetes/pkg/volume/cephfs
 k8s.io/kubernetes/pkg/volume/cinder
 k8s.io/kubernetes/pkg/volume/configmap
@@ -1580,7 +1578,7 @@ k8s.io/kubernetes/pkg/volume/vsphere_volume
 k8s.io/kubernetes/pkg/windows/service
 k8s.io/kubernetes/test/utils
 k8s.io/kubernetes/third_party/forked/golang/expansion
-# k8s.io/legacy-cloud-providers v0.0.0 => k8s.io/legacy-cloud-providers v0.20.0-alpha.1
+# k8s.io/legacy-cloud-providers v0.20.0-alpha.1 => k8s.io/legacy-cloud-providers v0.20.0-alpha.1
 ## explicit
 k8s.io/legacy-cloud-providers/aws
 k8s.io/legacy-cloud-providers/azure
@@ -1625,6 +1623,9 @@ k8s.io/legacy-cloud-providers/openstack
 k8s.io/legacy-cloud-providers/vsphere
 k8s.io/legacy-cloud-providers/vsphere/vclib
 k8s.io/legacy-cloud-providers/vsphere/vclib/diskmanagers
+# k8s.io/mount-utils v0.20.0-alpha.1 => k8s.io/mount-utils v0.20.0-alpha.1
+## explicit
+k8s.io/mount-utils
 # k8s.io/utils v0.0.0-20201005171033-6301aaf42dc7
 ## explicit
 k8s.io/utils/buffer
@@ -1636,6 +1637,7 @@ k8s.io/utils/io
 k8s.io/utils/keymutex
 k8s.io/utils/mount
 k8s.io/utils/net
+k8s.io/utils/net/ebtables
 k8s.io/utils/nsenter
 k8s.io/utils/path
 k8s.io/utils/pointer
@@ -1673,4 +1675,5 @@ sigs.k8s.io/yaml
 # k8s.io/kubelet => k8s.io/kubelet v0.20.0-alpha.1
 # k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.20.0-alpha.1
 # k8s.io/metrics => k8s.io/metrics v0.20.0-alpha.1
+# k8s.io/mount-utils => k8s.io/mount-utils v0.20.0-alpha.1
 # k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.20.0-alpha.1
