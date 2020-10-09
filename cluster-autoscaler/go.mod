@@ -39,6 +39,7 @@ require (
 	k8s.io/klog/v2 v2.3.0
 	k8s.io/kubernetes v1.20.0-alpha.1
 	k8s.io/legacy-cloud-providers v0.20.0-alpha.1
+	k8s.io/mount-utils v0.20.0-alpha.1
 	k8s.io/utils v0.0.0-20201005171033-6301aaf42dc7
 )
 
@@ -65,4 +66,5 @@ replace (
 	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.20.0-alpha.1
 	k8s.io/metrics => k8s.io/metrics v0.20.0-alpha.1
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.20.0-alpha.1
+	k8s.io/mount-utils => k8s.io/mount-utils v0.20.0-alpha.1
 )
