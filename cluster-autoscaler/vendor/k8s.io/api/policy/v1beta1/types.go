@@ -313,7 +313,6 @@ const (
 	PortworxVolume        FSType = "portworxVolume"
 	ScaleIO               FSType = "scaleIO"
 	CSI                   FSType = "csi"
-	Ephemeral             FSType = "ephemeral"
 	All                   FSType = "*"
 )
 

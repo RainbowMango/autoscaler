@@ -735,10 +735,9 @@ func (f *FakeDockerClient) ResetImages() {
 func (f *FakeDockerClient) InjectImageInspects(inspects []dockertypes.ImageInspect) {
 	f.Lock()
 	defer f.Unlock()
-	for i := range inspects {
-		inspect := inspects[i]
-		f.Images = append(f.Images, *createImageFromImageInspect(inspect))
-		f.ImageInspects[inspect.ID] = &inspect
+	for _, i := range inspects {
+		f.Images = append(f.Images, *createImageFromImageInspect(i))
+		f.ImageInspects[i.ID] = &i
 	}
 }
 

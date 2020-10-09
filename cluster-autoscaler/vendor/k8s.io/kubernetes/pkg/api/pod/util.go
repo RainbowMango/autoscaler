@@ -406,6 +406,14 @@ func dropDisabledFields(
 		})
 	}
 
+	if !utilfeature.DefaultFeatureGate.Enabled(features.StartupProbe) && !startupProbeInUse(oldPodSpec) {
+		// drop startupProbe from all containers if the feature is disabled
+		VisitContainers(podSpec, AllContainers, func(c *api.Container, containerType ContainerType) bool {
+			c.StartupProbe = nil
+			return true
+		})
+	}
+
 	dropDisabledRunAsGroupField(podSpec, oldPodSpec)
 
 	dropDisabledFSGroupFields(podSpec, oldPodSpec)
@@ -681,6 +689,24 @@ func subpathExprInUse(podSpec *api.PodSpec) bool {
 				inUse = true
 				return false
 			}
+		}
+		return true
+	})
+
+	return inUse
+}
+
+// startupProbeInUse returns true if the pod spec is non-nil and has a container that has a startupProbe defined
+func startupProbeInUse(podSpec *api.PodSpec) bool {
+	if podSpec == nil {
+		return false
+	}
+
+	var inUse bool
+	VisitContainers(podSpec, AllContainers, func(c *api.Container, containerType ContainerType) bool {
+		if c.StartupProbe != nil {
+			inUse = true
+			return false
 		}
 		return true
 	})

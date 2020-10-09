@@ -25,8 +25,8 @@ import (
 	framework "k8s.io/kubernetes/pkg/scheduler/framework/v1alpha1"
 )
 
-// NodeUnschedulable plugin filters nodes that set node.Spec.Unschedulable=true unless
-// the pod tolerates {key=node.kubernetes.io/unschedulable, effect:NoSchedule} taint.
+// NodeUnschedulable is a plugin that priorities nodes according to the node annotation
+// "scheduler.alpha.kubernetes.io/preferAvoidPods".
 type NodeUnschedulable struct {
 }
 

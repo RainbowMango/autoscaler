@@ -33,7 +33,6 @@ import (
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	corelisters "k8s.io/client-go/listers/core/v1"
 	policylisters "k8s.io/client-go/listers/policy/v1beta1"
 	extenderv1 "k8s.io/kube-scheduler/extender/v1"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
@@ -53,7 +52,6 @@ const (
 // DefaultPreemption is a PostFilter plugin implements the preemption logic.
 type DefaultPreemption struct {
 	fh        framework.FrameworkHandle
-	podLister corelisters.PodLister
 	pdbLister policylisters.PodDisruptionBudgetLister
 }
 
@@ -68,7 +66,6 @@ func (pl *DefaultPreemption) Name() string {
 func New(_ runtime.Object, fh framework.FrameworkHandle) (framework.Plugin, error) {
 	pl := DefaultPreemption{
 		fh:        fh,
-		podLister: fh.SharedInformerFactory().Core().V1().Pods().Lister(),
 		pdbLister: getPDBLister(fh.SharedInformerFactory()),
 	}
 	return &pl, nil
@@ -109,10 +106,8 @@ func (pl *DefaultPreemption) preempt(ctx context.Context, state *framework.Cycle
 	nodeLister := pl.fh.SnapshotSharedLister().NodeInfos()
 
 	// 0) Fetch the latest version of <pod>.
-	// It's safe to directly fetch pod here. Because the informer cache has already been
-	// initialized when creating the Scheduler obj, i.e., factory.go#MakeDefaultErrorFunc().
-	// However, tests may need to manually initialize the shared pod informer.
-	pod, err := pl.podLister.Pods(pod.Namespace).Get(pod.Name)
+	// TODO(Huang-Wei): get pod from informer cache instead of API server.
+	pod, err := util.GetUpdatedPod(cs, pod)
 	if err != nil {
 		klog.Errorf("Error getting the updated preemptor pod object: %v", err)
 		return "", err
@@ -337,15 +332,13 @@ func SelectCandidate(candidates []Candidate) Candidate {
 
 	// Same as candidatesToVictimsMap, this logic is not applicable for out-of-tree
 	// preemption plugins that exercise different candidates on the same nominated node.
-	if victims := victimsMap[candidateNode]; victims != nil {
-		return &candidate{
-			victims: victims,
-			name:    candidateNode,
+	for _, candidate := range candidates {
+		if candidateNode == candidate.Name() {
+			return candidate
 		}
 	}
-
 	// We shouldn't reach here.
-	klog.Errorf("should not reach here, no candidate selected from %v.", candidates)
+	klog.Errorf("None candidate can be picked from %v.", candidates)
 	// To not break the whole flow, return the first candidate.
 	return candidates[0]
 }

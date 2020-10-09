@@ -23,7 +23,7 @@ import (
 	"os"
 )
 
-func grabIptablesLocks(lock14filePath, lock16filePath string) (iptablesLocker, error) {
+func grabIptablesLocks(lockfilePath string) (iptablesLocker, error) {
 	return nil, fmt.Errorf("iptables unsupported on this platform")
 }
 

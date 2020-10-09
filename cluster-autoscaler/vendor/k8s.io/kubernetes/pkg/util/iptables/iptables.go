@@ -186,11 +186,8 @@ const WaitIntervalString = "-W"
 // WaitIntervalUsecondsValue a constant for specifying the default wait interval useconds
 const WaitIntervalUsecondsValue = "100000"
 
-// LockfilePath16x is the iptables 1.6.x lock file acquired by any process that's making any change in the iptable rule
+// LockfilePath16x is the iptables lock file acquired by any process that's making any change in the iptable rule
 const LockfilePath16x = "/run/xtables.lock"
-
-// LockfilePath14x is the iptables 1.4.x lock file acquired by any process that's making any change in the iptable rule
-const LockfilePath14x = "@xtables"
 
 // runner implements Interface in terms of exec("iptables").
 type runner struct {
@@ -201,24 +198,20 @@ type runner struct {
 	hasRandomFully  bool
 	waitFlag        []string
 	restoreWaitFlag []string
-	lockfilePath14x string
-	lockfilePath16x string
+	lockfilePath    string
 }
 
 // newInternal returns a new Interface which will exec iptables, and allows the
 // caller to change the iptables-restore lockfile path
-func newInternal(exec utilexec.Interface, protocol Protocol, lockfilePath14x, lockfilePath16x string) Interface {
+func newInternal(exec utilexec.Interface, protocol Protocol, lockfilePath string) Interface {
 	version, err := getIPTablesVersion(exec, protocol)
 	if err != nil {
 		klog.Warningf("Error checking iptables version, assuming version at least %s: %v", MinCheckVersion, err)
 		version = MinCheckVersion
 	}
 
-	if lockfilePath16x == "" {
-		lockfilePath16x = LockfilePath16x
-	}
-	if lockfilePath14x == "" {
-		lockfilePath14x = LockfilePath14x
+	if lockfilePath == "" {
+		lockfilePath = LockfilePath16x
 	}
 
 	runner := &runner{
@@ -228,15 +221,14 @@ func newInternal(exec utilexec.Interface, protocol Protocol, lockfilePath14x, lo
 		hasRandomFully:  version.AtLeast(RandomFullyMinVersion),
 		waitFlag:        getIPTablesWaitFlag(version),
 		restoreWaitFlag: getIPTablesRestoreWaitFlag(version, exec, protocol),
-		lockfilePath14x: lockfilePath14x,
-		lockfilePath16x: lockfilePath16x,
+		lockfilePath:    lockfilePath,
 	}
 	return runner
 }
 
 // New returns a new Interface which will exec iptables.
 func New(exec utilexec.Interface, protocol Protocol) Interface {
-	return newInternal(exec, protocol, "", "")
+	return newInternal(exec, protocol, "")
 }
 
 // EnsureChain is part of Interface.
@@ -398,7 +390,7 @@ func (runner *runner) restoreInternal(args []string, data []byte, flush FlushFla
 	// from stepping on each other.  iptables-restore 1.6.2 will have
 	// a --wait option like iptables itself, but that's not widely deployed.
 	if len(runner.restoreWaitFlag) == 0 {
-		locker, err := grabIptablesLocks(runner.lockfilePath14x, runner.lockfilePath16x)
+		locker, err := grabIptablesLocks(runner.lockfilePath)
 		if err != nil {
 			return err
 		}
