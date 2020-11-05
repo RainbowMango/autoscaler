@@ -149,6 +149,7 @@ func GetNodeInfosForGroups(nodes []*apiv1.Node, nodeInfoCache map[string]*schedu
 		}
 	}
 
+	klog.Infof("[JUSTFORDEBUG]: len(nodegroupinfo) = %d", len(result))
 	return result, nil
 }
 
