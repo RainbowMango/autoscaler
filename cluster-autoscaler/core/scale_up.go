@@ -121,6 +121,7 @@ func calculateScaleUpCoresMemoryTotal(
 		}
 		nodeInfo, found := nodeInfos[nodeGroup.Id()]
 		if !found {
+			klog.Infof("[JUSTFORDEBUG]: no node info for node group: %s", nodeGroup.Id())
 			return 0, 0, errors.NewAutoscalerError(errors.CloudProviderError, "No node info for: %s", nodeGroup.Id())
 		}
 		if currentSize > 0 {
