@@ -113,6 +113,7 @@ func GetNodeInfosForGroups(nodes []*apiv1.Node, nodeInfoCache map[string]*schedu
 		// working nodes in the node groups. By default CA tries to use a real-world example.
 		nodeInfo, err := GetNodeInfoFromTemplate(nodeGroup, daemonsets, predicateChecker, ignoredTaints)
 		if err != nil {
+			klog.Infof("[JUSTFORDEBUG] cloud provide not implemented node info for node group: %s", nodeGroup.Id())
 			if err == cloudprovider.ErrNotImplemented {
 				continue
 			} else {
